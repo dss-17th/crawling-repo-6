@@ -11,26 +11,26 @@ app.config.from_object(Config)
 
 
 from app.items.mysql_zigbang import Zigbang, ZigbangApt, zigbang_db, zigbang_apt_db
-from app.items.mysql.kakao import KaKaoApt, KaKaoOneroom, KaKaoOfficetel, KaKaoVilla
-from app.items.mysql.kakao import kakao_apt_db, kakao_oneroom_db, kakao_officetel_db, kakao_villa_db
+from app.items.mysql_kakao import KaKaoApt, KaKaoOneroom, KaKaoOfficetel, KaKaoVilla
+from app.items.mysql_kakao import kakao_apt_db, kakao_oneroom_db, kakao_officetel_db, kakao_villa_db
 
 
 @app.route("/home")
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 
 @app.route("/home/map")
 def show_map():
     result = {"code": 200}
-    type = request.values.get("type")
-    result["type"] = type
+    cate = request.values.get("type")
+    print(cate)
+    result["type"] = cate
 
-    if type != "아파트":
-        curr_db = zigbang_db
+    if cate != "아파트":
+        result['datas'] = Zigbang.query.filter_by(category=f"{cate}")
     else:
-        curr_db = zigbang_apt_db
+        result['datas'] = ZigbangApt.query.filter_by(category=f"{cate}")
+    
 
-    datas = curr_db.query.filter_by(category=f"{type}")
-
-    return jsonify(datas)
+    return jsonify(result)
