@@ -50,12 +50,12 @@ class Zigbang(zigbang_db.Model):
         self.category = category
 
 
-# DB에 primary_key로 index 추가해야함
 # zigbang apt
 class ZigbangApt(zigbang_apt_db.Model):
 
     __tablename__ = "zigbang_apt"
 
+    index = zigbang_apt_db.Column(zigbang_apt_db.Integer, primary_key=True)
     brand = zigbang_apt_db.Column(zigbang_apt_db.Text)
     buildDate = zigbang_apt_db.Column(zigbang_apt_db.Integer)
     bunji = zigbang_apt_db.Column(zigbang_apt_db.Text)
@@ -81,7 +81,7 @@ class ZigbangApt(zigbang_apt_db.Model):
     서비스구분 = zigbang_apt_db.Column(zigbang_apt_db.Text)
     register = zigbang_apt_db.Column(zigbang_apt_db.Integer)
     online = zigbang_apt_db.Column(zigbang_apt_db.Integer)
-    rent_mim = zigbang_apt_db.Column(zigbang_apt_db.Integer)
+    rent_min = zigbang_apt_db.Column(zigbang_apt_db.Integer)
     rent_max = zigbang_apt_db.Column(zigbang_apt_db.Integer)
     rent_avg = zigbang_apt_db.Column(zigbang_apt_db.Integer)
     sales_min = zigbang_apt_db.Column(zigbang_apt_db.Integer)
