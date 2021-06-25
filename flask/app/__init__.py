@@ -17,20 +17,37 @@ from app.items.mysql_kakao import kakao_apt_db, kakao_oneroom_db, kakao_officete
 
 @app.route("/home")
 def index():
-    return render_template("index2.html")
+    return render_template("index3.html")
 
 
-@app.route("/home/map")
+@app.route("/api")
 def show_map():
     result = {"code": 200}
     cate = request.values.get("type")
-    print(cate)
-    result["type"] = cate
+    result['datas'] = {}
+    result['datas']['type'] = cate
 
     if cate != "아파트":
-        result['datas'] = Zigbang.query.filter_by(category=f"{cate}")
+        datas = Zigbang.query.filter_by(category=f"{cate}").all()
     else:
-        result['datas'] = ZigbangApt.query.filter_by(category=f"{cate}")
-    
+        datas = ZigbangApt.query.filter_by(category=f"{cate}").all()
+
+    result['datas']['lat'] = [data.lat for data in datas]
+    result['datas']['lng'] = [data.lng for data in datas]
+    result['datas']['name'] = [data.name for data in datas]
+    result['datas']['p'] = [data.p for data in datas]
+
+    print(result)
 
     return jsonify(result)
+    # return render_template("test.html", data=result)
+
+
+# @app.route("/home/map")
+# def test():
+#     return render_template("test.html")
+
+
+
+
+
