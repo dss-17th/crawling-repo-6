@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <title>Title</title>
+        <style>
+            html, body{
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+            .wrap{
+                display: flex;
+                /*부모한테 플렉스라는 속성을 넣고 flex-direction을 넣으면 자식 태그들이 잘 정렬됨*/
+                /*플렉스는 정렬할때 가로 아니면 세로로 정렬시킴, 기본적으로는 가로로 정렬시킴*/
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                /* background-color: aquamarine; */
+            }
+            .contain{
+                display: flex;
+                width: 100%;
+                height: 100%;
+                /* background-color: brown; */
+                margin : 0;
+                padding : 0;
+            }
+            .nav{
+                width: 100%;
+                height: 100px;
+                /* background-color: blueviolet; */
+                padding:0;
+                margin:0;
+            }
+            .sidebar{
+                width: 25%;
+                height: 100%;
+                /* background-color: greenyellow; */
+            }
+            .main{
+                width: 75%;
+                height: 100%;
+                /* background-color: pink; */
+            }
+            .logo{
+                padding:0;
+            }
+            .bg-light{
+                padding:0;
+            }
+            .nav-link{
+                padding:0;
+            }
+            .navbar-brand{
+                margin:0;
+                padding:0;
+            }
+			#map{
+				width:100%;
+
+				height : 690px;
+			}
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="nav">
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container">
+                      <a class="navbar-brand" href="#">
+                        <img class='logo' src="https://file.mk.co.kr/meet/neds/2021/05/image_readtop_2021_442261_16203712534637548.png" alt="" width="100" height="100">
+                      </a>
+                    </div>
+                  </nav>
+                  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav row">
+                          <li class="nav-item apt col-3" value="아파트">
+                            <button id="apt" class="nav-link" value="아파트">아파트</button>
+                            <!--<a class="nav-link" href="/home/map?type=아파트">아파트</a>-->
+                          </li>
+                          <li class="nav-item villa col-3">
+                            <a class="nav-link" href="/home/map?type=빌라">빌라</a>
+                          </li>
+                          <li class="nav-item oneroom col-3">
+                            <a class="nav-link" href="/home/map?type=원룸">원룸</a>
+                          </li>
+                          <li class="nav-item office col-3">
+                            <a class="nav-link" href="/home/map?type=오피스텔">오피스텔</a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                  </nav>
+            </div><!-- nav -->
+            <div class="row">
+                <div class="main">
+					<div id="map"></div>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b766eb144e4f2601ea4a5e6d881d36bb"></script>
+						<script>
+              var map = new kakao.maps.Map(document.getElementById('map'), {
+                  center : new kakao.maps.LatLng(37.544364459777945, 127.0775547924809),
+                  level : 5
+              });
+
+              $(document).ready(function(){
+                $("#apt").on('click', function(){
+                  var text = $("#apt").val();
+                      url = "/api?type=" + text;
+                  $.getJSON(url, function(response){
+                    console.log(response)
+                  })
+                })
+
+              })
+
+
+              /*
+							var container = document.getElementById('map');
+							var options = {
+								center: new kakao.maps.LatLng(37.544364459777945, 127.0775547924809),
+								level: 5
+							};
+
+							var map = new kakao.maps.Map(container, options);
+              */
+						</script>
+
+				</div>
+                <div class="sidebar">
+					<div class="list-group">
+						<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+						  <div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">List group item heading</h5>
+							<small>3 days ago</small>
+						  </div>
+						  <p class="mb-1">Some placeholder content in a paragraph.</p>
+						  <small>And some small print.</small>
+						</a>
+						<a href="#" class="list-group-item list-group-item-action">
+						  <div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">List group item heading</h5>
+							<small class="text-muted">3 days ago</small>
+						  </div>
+						  <p class="mb-1">Some placeholder content in a paragraph.</p>
+						  <small class="text-muted">And some muted small print.</small>
+						</a>
+						<a href="#" class="list-group-item list-group-item-action">
+						  <div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">List group item heading</h5>
+							<small class="text-muted">3 days ago</small>
+						  </div>
+						  <p class="mb-1">Some placeholder content in a paragraph.</p>
+						  <small class="text-muted">And some muted small print.</small>
+						</a>
+					  </div>
+				</div>
+            </div>
+
+        </div>
+    </body>
+</html>
