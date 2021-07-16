@@ -1,12 +1,6 @@
 import geohash2
 import pandas as pd
 import requests
-import configparser
-
-
-config = configparser.ConfigParser()
-config.read("./datas.ini")
-info = config["kakao"]
 
 
 class SearchDatas:
@@ -52,6 +46,7 @@ class SearchDatas:
 
         self.lat, self.lng = response.json()['items'][0]['lat'], response.json()['items'][0]['lng']
         self.geohash = geohash2.encode(self.lat, self.lng, precision=precision)
+        print("GEOHASH : ", self.geohash)
 
 
     def zigbang_oneroom(self):
@@ -100,7 +95,7 @@ class SearchDatas:
 
         zigbang_oneroom_df = pd.concat(dfs)
         zigbang_oneroom_df.reset_index(drop=True, inplace=True)
-        print("end oneroom crawling")
+        print(f"end zigbang oneroom crawling, rows : {len(zigbang_oneroom_df)}")
         return zigbang_oneroom_df
 
     def zigbang_apt(self):
@@ -151,7 +146,7 @@ class SearchDatas:
         df.drop(columns=["item_count", "price", "floorArea", "marker"], inplace=True)
         zigbang_apt_df = df
 
-        print("end apartment crawling")
+        print(f"end zigbang apartment crawling, rows : {len(zigbang_apt_df)}")
         return zigbang_apt_df
 
 
@@ -197,7 +192,7 @@ class SearchDatas:
         df['category'] = "빌라"
 
         zigbang_villa_df = df
-        print("end villa crawling")
+        print(f"end zigbang villa crawling, rows : {len(zigbang_villa_df)}")
         return zigbang_villa_df
 
 
@@ -243,5 +238,5 @@ class SearchDatas:
         df['category'] = '오피스텔'
         zigbang_officetel_df = df
 
-        print("end officetels crawling")
+        print(f"end zigbang officetel crawling, rows : {len(zigbang_officetel_df)}")
         return zigbang_officetel_df
