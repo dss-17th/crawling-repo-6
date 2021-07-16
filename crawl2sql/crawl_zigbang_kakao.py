@@ -18,7 +18,7 @@ info = config["crawl"]
 print("import done")
 
 # SQL 서버연결
-engine =  create_engine(f"mysql://{info["USER"]}:{info["PASSWORD"]}@{info["IP"]}/{info["DB"]}", encoding="utf-8")
+engine =  create_engine(f'mysql://{info["USER"]}:{info["PASSWORD"]}@{info["IP"]}/{info["DB"]}', encoding="utf-8")
 conn = engine.connect()
 
 # 서울시 광진구 위치정보를 가진 객체 생성
@@ -43,7 +43,7 @@ zigbang_apt = gwangjin.zigbang_apt()
 # 카카오 API를 이용한 직방 매물 데이터에 대한 편의시설 정보 크롤링 and 직방 dataframe에 편의시설별 총 개수 컬럼 생성
 
 # 직방 원룸 매물에 대한 편의시설 데이터 수집
-kakao_oneroom = kakao([info["REST_API"], target=zigbang_oneroom])
+kakao_oneroom = kakao(info["REST_API"], target=zigbang_oneroom)
 
 # 직방 빌라에 대한 편의시설 데이터 수집
 kakao_villa = kakao(info["REST_API"], target=zigbang_villa)
