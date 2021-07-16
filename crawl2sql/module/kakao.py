@@ -32,7 +32,6 @@ def kakao(REST_API_KEY, target):
     dfs_2 = []
 
     for idx, loc in enumerate(target[['lat', 'lng']].values):
-        print(idx, end=" ")
         lat, lng = loc
         for category in cate_ls:
             while True:
