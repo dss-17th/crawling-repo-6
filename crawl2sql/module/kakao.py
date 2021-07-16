@@ -54,5 +54,5 @@ def kakao(REST_API_KEY, target):
                 page += 1
     
     data = pd.concat(dfs_2).reset_index(drop=True)
-    print("end kakao crawling")
+    print(f"end kakao crawling, rows : {len(data)}")
     return data
