@@ -61,7 +61,7 @@ kakao_datasets = {"oneroom": kakao_oneroom, "villa": kakao_villa, "officetel": k
 
 # 직방 수집 데이터 전처리 후 DB에 저장
 for name, dataset in zigbang_datasets.items():
-    dataset.fillna("-")
+    dataset.fillna(0)
 
     if name != "zigbang_apt":
         dataset.drop(["tags","title"], 1)
