@@ -18,7 +18,7 @@ info = config["crawl"]
 print("import done")
 
 # SQL 서버연결
-engine =  create_engine(f'mysql://{info["USER"]}:{info["PASSWORD"]}@{info["IP"]}/{info["DB"]}', encoding="utf-8")
+engine = create_engine(f'mysql+pymysql://{info["USER"]}:{info["PASSWORD"]}@{info["IP"]}/{info["DB"]}', encoding='utf-8')
 conn = engine.connect()
 
 # 서울시 광진구 위치정보를 가진 객체 생성
@@ -61,14 +61,14 @@ kakao_datasets = {"oneroom": kakao_oneroom, "villa": kakao_villa, "officetel": k
 
 # 직방 수집 데이터 전처리 후 DB에 저장
 for name, dataset in zigbang_datasets.items():
-    dataset.fillna(0)
+    dataset = dataset.fillna(0)
 
     if name != "zigbang_apt":
-        dataset.drop(["tags","title"], 1)
+        dataset = dataset.drop(["tags","title"], 1)
 
-    dataset.to_sql(name=name, con=engine, if_exists='replace', index=False)
+    dataset.to_sql(name=name, con=engine, if_exists='replace', index=False, chunksize=1000)
 
 
 # 카카오 수집 데이터 전처리 후 DB에 저장
 for name, dataset in kakao_datasets.items():
-    dataset.to_sql(name=name, con=engine, if_exists="replace", index=False)
+    dataset.to_sql(name=name, con=engine, if_exists="replace", index=False, chunksize=1000)
