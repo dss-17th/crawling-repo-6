@@ -35,12 +35,12 @@
 2. 카카오맵 
 카카오맵은 Kakao api를 사용하여 크롤링을 하였다. 직방에서 가져온 매물 별 아이디값, 위치, 정보 등을 포함한 데이터 프렝미에 카카오 API 를 이용해 매물 별 생활반경 내의 편의시설을 카테고리 별로 크롤링하여 더해준다. Kakao 함수에는 다음과 같은 변수가 포함되어 있다: 
 	- REST_API_KEY: kakao api key를 입력하여 카카오 맵을 크롤링 할 수 있는 키 
-	- obj: category of zigbang_dataframe {“oneroom”, “apartment”, “villa”, “officetel”} 원룸, 아파트, 빌라, 오피스텔의 매물 ☆ 위치 정보 등 직방에서 크롤링 된 데이터. 
+	- obj: category of zigbang_dataframe {“oneroom”, “apartment”, “villa”, “officetel”} 원룸, 아파트, 빌라, 오피스텔의 매물 별 위치 정보 등 직방에서 크롤링 된 데이터. 
 	  
 
 ### 1-3. Database
-	- module.kakao: 앞선 크롤링파트의 클래스와 함수를 이용하여 카카오맵에서 매물 ☆ 인근 편의시설 정보를 크롤링한 module 
-	- module.zigbang: 앞선 crawling 파트의 클래스와 함수를 이용하여 
+- module.kakao: 앞선 크롤링파트의 클래스와 함수를 이용하여 카카오맵에서 매물 ☆ 인근 편의시설 정보를 크롤링한 module 
+- module.zigbang: 앞선 crawling 파트의 클래스와 함수를 이용하여 
 
 ### 1-3 Flask 
 
