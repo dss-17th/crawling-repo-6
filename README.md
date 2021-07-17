@@ -1,6 +1,6 @@
 # 직방 매물 탐색 시 주변 편의시설 안내 서비스
 
-![plot](./img/start.jpg)
+![start](https://user-images.githubusercontent.com/80507275/126037011-c9411dc6-7a8c-45b0-8e0d-19ec4852ed69.jpg)
 
 
 ## 1 개요 
