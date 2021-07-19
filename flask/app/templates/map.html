@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>카테고리별 장소 검색하기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/main.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="container py-3">
+    <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <img src="https://file.mk.co.kr/meet/neds/2021/05/image_readtop_2021_442261_16203712534637548.png" alt="main logo" height="50px;">
+            </a>
+
+            <nav class="d-inline-flex mt-2 mx-3">
+                <a class="me-3 py-2 text-dark text-decoration-none" onclick="apt_grep()">아파트</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" onclick="villa_grep()">빌라</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" onclick="oneroom_grep()">원룸</a>
+                <a class="py-2 text-dark text-decoration-none" onclick="officetel_grep()">오피스텔</a>
+                
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="row">
+            <div class="col-9">
+                <div class="map_wrap">
+                    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+                    <ul id="category">
+                        <li id="BK9" data-order="0">
+                            <span class="category_bg bank"></span>
+                            은행
+                        </li>
+                        <li id="MT1" data-order="1">
+                            <span class="category_bg mart"></span>
+                            마트
+                        </li>
+                        <li id="PM9" data-order="2">
+                            <span class="category_bg pharmacy"></span>
+                            약국
+                        </li>
+                        <li id="OL7" data-order="3">
+                            <span class="category_bg oil"></span>
+                            주유소
+                        </li>
+                        <li id="CE7" data-order="4">
+                            <span class="category_bg cafe"></span>
+                            카페
+                        </li>
+                        <li id="CS2" data-order="5">
+                            <span class="category_bg store"></span>
+                            편의점
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="sidebar">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small>3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small>And some small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-muted">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-muted">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-muted">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-muted">And some muted small print.</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+
+
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=eb07a33eb62b00ccb4cdf08ef4856562&libraries=services"></script>
+    <script type="text/javascript" src="static/js/map.js"></script>
+</body>
+
+</html>
