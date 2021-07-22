@@ -1,3 +1,4 @@
+
 // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 var placeOverlay = new kakao.maps.CustomOverlay({
         zIndex: 1
@@ -201,71 +202,253 @@ function removeMarker() {
     markers = [];
 }
 
-function apt_grep() {
-        $.ajax({
-            type: "GET",
-            url: "/apt_listup",
-            data: {},
-            success: function (response) {
-                console.log(response);
-                let apt_list = response['apt_list'];
-                console.log(apt_list[0][2]);
-                for (i=0; i<apt_list.length; i++){
+
+    function apt_grep() {
+        console.log(map);
+        
+            $.ajax({
+                type: "GET",
+                url: "/apt_listup",
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    let apt_list = response['apt_list'];
+                    console.log(apt_list[0][2]);
                     
-                        var markerPosition  = new kakao.maps.LatLng(apt_list[i][2], apt_list[i][3]); 
-                        marker = new kakao.maps.Marker({
-                            position: markerPosition
+                    for (var i = 0; i < apt_list.length; i ++) {
+                        // 마커를 생성합니다
+                        var latlng = new kakao.maps.LatLng(apt_list[i][2], apt_list[i][3]);
+                        var apt_name = apt_list[i][0];
+                        var dong = apt_list[i][1];
+                        var rent_min = apt_list[i][5];
+                        var rent_max = apt_list[i][6];
+                        var rent_avg = apt_list[i][7];
+                        var sale_min = apt_list[i][8];
+                        var sale_max = apt_list[i][9];
+                        var sale_avg = apt_list[i][10];
+                        var mt = apt_list[i][11]; // 마트
+                        var cs = apt_list[i][12]; // 편의점
+                        var ps = apt_list[i][13]; // 유치원
+                        var sc = apt_list[i][14]; // 학교
+                        var ac = apt_list[i][15]; // 학원
+                        var ol = apt_list[i][17]; // 주유소
+                        var sw = apt_list[i][18]; // 지하철
+                        var bk = apt_list[i][19]; // 은행
+                        var fd = apt_list[i][25]; // 음식점
+                        var ce = apt_list[i][26]; // 카페
+                        var hp = apt_list[i][27]; // 병원
+                        var pm = apt_list[i][28]; // 약국
+                        var content = `
+                        <div>아파트 이름 : ${apt_name}</div>
+                        <div>위치 : ${dong}</div>
+                        <hr>
+                        <div>전세 : ${rent_min} ~ ${rent_max} (만원)</div>
+                        <div>전세 평균 : ${rent_avg}</div>
+                        
+                        <div>매매 : ${sale_min} ~ ${sale_max} (만원)</div>
+                        <div>매매 평균 : ${sale_avg}</div>
+                        <hr>
+                        <div> 주변시설 정보
+                        <div>마트 : ${mt}, 편의점 : ${cs}, 유치원 : ${ps}, 학교 : ${sc}, 학원 : ${ac}, 주유소 :${ol}
+                        지하철 : ${sw}, 은행 : ${bk}, 음식점 : ${fd}, 카페 : ${ce}, 병원 : ${hp}, 약국 : ${pm}</div> 
+                        </div>`
+                        
+                        var marker = new kakao.maps.Marker({
+                            map: map, // 마커를 표시할 지도
+                            position: latlng // 마커의 위치
                         });
                     
-                    marker.setMap(map);
+                        // 마커에 표시할 인포윈도우를 생성합니다 
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content: content // 인포윈도우에 표시할 내용
+                        });
                     
+                        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+                        // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+                        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                    }
+                    
+                    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+                    function makeOverListener(map, marker, infowindow) {
+                        return function() {
+                            infowindow.open(map, marker);
+                        };
+                    }
+                    
+                    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+                    function makeOutListener(infowindow) {
+                        return function() {
+                            infowindow.close();
+                        };
+                    }
+                        
+                        
+                
             }
+        })
+            
         }
-    })
-        
-    }
+
+
+
+      
+    
     function villa_grep() {
         
-                $.ajax({
-                    type: "GET",
-                    url: "/villa_listup",
-                    data: {},
-                    success: function (response) {
-                        console.log(response);
-                        let villa_list = response['villa_list'];
-                        for (i=0; i<villa_list.length; i++){
-                            
-                                var markerPosition  = new kakao.maps.LatLng(villa_list[i][1], villa_list[i][2]); 
-                                marker = new kakao.maps.Marker({
-                                    position: markerPosition
-                                });
-                            
-                            marker.setMap(map);
-                    }  
-                }
-            });    
-    }
-    function oneroom_grep() {
-        
-        $.ajax({
-            type: "GET",
-            url: "/oneroom_listup",
-            data: {},
-            success: function (response) {
-                console.log(response);
-                let oneroom_list = response['oneroom_list'];
-                for (i=0; i<oneroom_list.length; i++){
+            $.ajax({
+                type: "GET",
+                url: "/villa_listup",
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    let apt_list = response['villa_list'];
                     
-                        var markerPosition  = new kakao.maps.LatLng(oneroom_list[i][1], oneroom_list[i][2]); 
+                    
+                    for (var i = 0; i < apt_list.length; i ++) {
+                        // 마커를 생성합니다
+                        var latlng = new kakao.maps.LatLng(apt_list[i][1], apt_list[i][2]);
+                        var sale_type = apt_list[i][0];
+                        var deposit = apt_list[i][3];
+                        var mt = apt_list[i][4]; // 마트
+                        var cs = apt_list[i][5]; // 편의점
+                        var ps = apt_list[i][6]; // 유치원
+                        var sc = apt_list[i][7]; // 학교
+                        var ac = apt_list[i][8]; // 학원
+                        var ol = apt_list[i][9]; // 주유소
+                        var sw = apt_list[i][10]; // 지하철
+                        var bk = apt_list[i][11]; // 은행
+                        var fd = apt_list[i][12]; // 음식점
+                        var ce = apt_list[i][13]; // 카페
+                        var hp = apt_list[i][14]; // 병원
+                        var pm = apt_list[i][15]; // 약국
+                        var content = `
+                        <div>매매형태 : 전세</div>
+                        <hr>
+                        <div>보증금 : ${deposit} (만원)</div>
+                        <hr>
+                        <div> 주변시설 정보
+                        <div>마트 : ${mt}, 편의점 : ${cs}, 유치원 : ${ps}, 학교 : ${sc}, 학원 : ${ac}, 주유소 :${ol}
+                        지하철 : ${sw}, 은행 : ${bk}, 음식점 : ${fd}, 카페 : ${ce}, 병원 : ${hp}, 약국 : ${pm}</div> 
+                        </div>`
+                        
                         var marker = new kakao.maps.Marker({
-                            position: markerPosition
+                            map: map, // 마커를 표시할 지도
+                            position: latlng // 마커의 위치
                         });
                     
-                    marker.setMap(map);
-            }  
+                        // 마커에 표시할 인포윈도우를 생성합니다 
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content: content // 인포윈도우에 표시할 내용
+                        });
+                    
+                        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+                        // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+                        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                    }
+                    
+                    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+                    function makeOverListener(map, marker, infowindow) {
+                        return function() {
+                            infowindow.open(map, marker);
+                        };
+                    }
+                    
+                    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+                    function makeOutListener(infowindow) {
+                        return function() {
+                            infowindow.close();
+                        };
+                    }
+                        
+                        
+                
+            }
+        })
+            
         }
-    });    
+    
+function oneroom_grep() {
+        
+    $.ajax({
+        type: "GET",
+        url: "/oneroom_listup",
+        data: {},
+        success: function (response) {
+            console.log(response);
+            let apt_list = response['oneroom_list'];
+            
+            
+            for (var i = 0; i < apt_list.length; i ++) {
+                // 마커를 생성합니다
+                var latlng = new kakao.maps.LatLng(apt_list[i][1], apt_list[i][2]);
+                var sale_type = apt_list[i][0];
+                var deposit = apt_list[i][3];
+                var mt = apt_list[i][4]; // 마트
+                var cs = apt_list[i][5]; // 편의점
+                var ps = apt_list[i][6]; // 유치원
+                var sc = apt_list[i][7]; // 학교
+                var ac = apt_list[i][8]; // 학원
+                var ol = apt_list[i][9]; // 주유소
+                var sw = apt_list[i][10]; // 지하철
+                var bk = apt_list[i][11]; // 은행
+                var fd = apt_list[i][12]; // 음식점
+                var ce = apt_list[i][13]; // 카페
+                var hp = apt_list[i][14]; // 병원
+                var pm = apt_list[i][15]; // 약국
+                var rent = apt_list[i][22]; // 월세
+                var content = `
+                <div>매매형태 : ${sale_type}</div>
+                <hr>
+                <div>보증금 : ${deposit} (만원)</div>
+                <div>월세 : ${rent}</div>
+                <hr>
+                <div> 주변시설 정보
+                <div>마트 : ${mt}, 편의점 : ${cs}, 유치원 : ${ps}, 학교 : ${sc}, 학원 : ${ac}, 주유소 :${ol}
+                지하철 : ${sw}, 은행 : ${bk}, 음식점 : ${fd}, 카페 : ${ce}, 병원 : ${hp}, 약국 : ${pm}</div> 
+                </div>`
+                
+                var marker = new kakao.maps.Marker({
+                    map: map, // 마커를 표시할 지도
+                    position: latlng // 마커의 위치
+                });
+            
+                // 마커에 표시할 인포윈도우를 생성합니다 
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: content // 인포윈도우에 표시할 내용
+                });
+            
+                // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+                // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+                // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+            }
+            
+            // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+            function makeOverListener(map, marker, infowindow) {
+                return function() {
+                    infowindow.open(map, marker);
+                };
+            }
+            
+            // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+            function makeOutListener(infowindow) {
+                return function() {
+                    infowindow.close();
+                };
+            }
+                
+                
+        
+    }
+})
+    
 }
+
 
 function officetel_grep() {
         
@@ -275,20 +458,81 @@ function officetel_grep() {
         data: {},
         success: function (response) {
             console.log(response);
-            let officetel_list = response['officetel_list'];
-            for (i=0; i<officetel_list.length; i++){
+            let apt_list = response['officetel_list'];
+            for (var i = 0; i < apt_list.length; i ++) {
+                // 마커를 생성합니다
+                var latlng = new kakao.maps.LatLng(apt_list[i][1], apt_list[i][2]);
+                var sale_type = apt_list[i][0];
+                var deposit = apt_list[i][3];
+                var mt = apt_list[i][4]; // 마트
+                var cs = apt_list[i][5]; // 편의점
+                var ps = apt_list[i][6]; // 유치원
+                var sc = apt_list[i][7]; // 학교
+                var ac = apt_list[i][8]; // 학원
+                var ol = apt_list[i][9]; // 주유소
+                var sw = apt_list[i][10]; // 지하철
+                var bk = apt_list[i][11]; // 은행
+                var fd = apt_list[i][12]; // 음식점
+                var ce = apt_list[i][13]; // 카페
+                var hp = apt_list[i][14]; // 병원
+                var pm = apt_list[i][15]; // 약국
+                var rent = apt_list[i][22]; // 월세
+                var content = `
+                <div>매매형태 : ${sale_type}</div>
+                <hr>
+                <div>보증금 : ${deposit} (만원)</div>
+                <div>월세 : ${rent}</div>
+                <hr>
+                <div> 주변시설 정보
+                <div>마트 : ${mt}, 편의점 : ${cs}, 유치원 : ${ps}, 학교 : ${sc}, 학원 : ${ac}, 주유소 :${ol}
+                지하철 : ${sw}, 은행 : ${bk}, 음식점 : ${fd}, 카페 : ${ce}, 병원 : ${hp}, 약국 : ${pm}</div> 
+                </div>`
                 
-                    var markerPosition  = new kakao.maps.LatLng(officetel_list[i][1], officetel_list[i][2]); 
-                    var marker = new kakao.maps.Marker({
-                        position: markerPosition
-                    });
+                var marker = new kakao.maps.Marker({
+                    map: map, // 마커를 표시할 지도
+                    position: latlng // 마커의 위치
+                });
+            
+                // 마커에 표시할 인포윈도우를 생성합니다 
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: content // 인포윈도우에 표시할 내용
+                });
+            
+                // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+                // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+                // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+            }
+            
+            // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+            function makeOverListener(map, marker, infowindow) {
+                return function() {
+                    infowindow.open(map, marker);
+                };
+            }
+            
+            // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+            function makeOutListener(infowindow) {
+                return function() {
+                    infowindow.close();
+                };
+            }
                 
-                marker.setMap(map);
-        }  
+                
+        
     }
-});    
+})
+    
 }
     
+function del_pin(){
+    window.location.reload();
+}
+
+
+
+
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 mapOption = { 
@@ -304,6 +548,7 @@ function marking(list) {
         marker.setMap(map)
     }
 }
+
 
 
 
