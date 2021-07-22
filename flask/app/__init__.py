@@ -4,14 +4,14 @@ pymysql.install_as_MySQLdb()
 import MySQLdb
 
 from flask import *
-from app.config import Config
+from app.config import info
 
 # database에 접근
-db= pymysql.connect(host='35.223.152.188',
+db = pymysql.connect(host=info["IP"],
                      port=3306,
-                     user='root',
-                     passwd='dss',
-                     charset='utf8')
+                     user=info["USER"],
+                     passwd=info["PASSWORD"],
+                     charset="utf8")
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -79,29 +79,29 @@ def officetel_listup():
     return jsonify({'result': 'success', 'officetel_list': result})
 
 
-@app.route("/api")
-def show_map():
-    result = {"code": 200}
-    cate = request.values.get("type")
-    result['datas'] = {}
-    result['datas']['type'] = cate
+# @app.route("/api")
+# def show_map():
+#     result = {"code": 200}
+#     cate = request.values.get("type")
+#     result['datas'] = {}
+#     result['datas']['type'] = cate
 
-    if cate != "아파트":
-        datas = Zigbang.query.filter_by(category=f"{cate}").all()
-    else:
-        datas = ZigbangApt.query.filter_by(category=f"{cate}").all()
+#     if cate != "아파트":
+#         datas = Zigbang.query.filter_by(category=f"{cate}").all()
+#     else:
+#         datas = ZigbangApt.query.filter_by(category=f"{cate}").all()
 
-    result['datas']['lat'] = [data.lat for data in datas]
-    result['datas']['lng'] = [data.lng for data in datas]
-    result['datas']['name'] = [data.name for data in datas]
-    result['datas']['p'] = [data.p for data in datas]
+#     result['datas']['lat'] = [data.lat for data in datas]
+#     result['datas']['lng'] = [data.lng for data in datas]
+#     result['datas']['name'] = [data.name for data in datas]
+#     result['datas']['p'] = [data.p for data in datas]
 
-    print(result)
+#     print(result)
 
-    return jsonify(result)
-    return render_template("test.html", data=result)
+#     return jsonify(result)
+#     return render_template("test.html", data=result)
 
 
 @app.route("/home/map")
 def test():
-    return render_template("test.html")
+    return render_template("map.html")
