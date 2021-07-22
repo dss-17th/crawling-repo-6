@@ -4,14 +4,14 @@ pymysql.install_as_MySQLdb()
 import MySQLdb
 
 from flask import *
-from app.config import Config
+from app.config import info
 
 # database에 접근
-db= pymysql.connect(host='35.223.152.188',
+db = pymysql.connect(host=info["IP"],
                      port=3306,
-                     user='root',
-                     passwd='dss',
-                     charset='utf8')
+                     user=info["USER"],
+                     passwd=info["PASSWORD"],
+                     charset="utf8")
 
 app = Flask(__name__)
 app.config.from_object(Config)
